@@ -1,0 +1,12 @@
+library(tidyverse)
+library(ggraph)
+library(igraph) 
+library(RColorBrewer)
+nodeDf = read.delim('node.txt')
+edgeDf = read.delim('edge.txt')
+nodeDf = nodeDf %>% arrange(group, rank)
+myCount <- nrow(nodeDf)
+nodeDf$id = seq(1, nrow(nodeDf))
+mygraph = graph_from_data_frame(edgeDf, vertices = nodeDf, directed = FALSE)
+P1 <- ggraph(mygraph, layout = 'linear', circular = TRUE) +geom_edge_arc(aes(edge_width = Smetana.score), color='#ABC49B') + scale_edge_width_continuous(range = c(0.1,1.5)) +expand_limits(x = c(-1.3, 1.3), y = c(-1.3, 1.3)) +coord_fixed() +scale_size_continuous(range = c(2, 5)) +theme_void()
+P1
